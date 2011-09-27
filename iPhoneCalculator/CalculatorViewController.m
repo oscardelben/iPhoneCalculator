@@ -106,7 +106,7 @@
 
 #pragma mark utilities
 
-// 0 is the default operation which uses the saved operator
+// If you pass 0, it will use the previously saved operation
 - (void)doOperation:(int)theOperation
 {
     double result;
@@ -149,14 +149,12 @@
     
     // assign the left operation for later use
     leftOperator = [NSNumber numberWithDouble:[resultText doubleValue]];
-    
-    deleteInput = YES;
 }
 
-- (NSMutableString *)prettyStringFromString:(NSString *)aString
+- (NSMutableString *)readableNumberFromString:(NSString *)aString
 {
     // given 12.30000 we remove the trailing zeros
-    
+    NSLog(@"%@", aString);
     NSMutableString *result = [NSMutableString stringWithString:aString];
     
     // check if it contains a . character
@@ -166,17 +164,26 @@
         for (int i = [result length] - 1; i >= 0; i--) {
             unichar currentChar = [result characterAtIndex:i];
             
-            if (currentChar == '0' || currentChar == '.') {
+            if (currentChar == '0') {
                 [result replaceCharactersInRange:NSMakeRange(i, 1) withString:@""];
-            } else {
+            } else if (currentChar == '.') {
+                [result replaceCharactersInRange:NSMakeRange(i, 1) withString:@""];
+                break;
+            }
+            else {
                 break;
             }
         }
     }
     
-    // assign default value
+    // assign default value if needed
     if ([result isEqualToString:@""]) {
         [result appendString:@"0"];
+    }
+    
+    // remove the initial 0 if present
+    if ([result length] > 1 && [result characterAtIndex:0] == '0') {
+        [result replaceCharactersInRange:NSMakeRange(0, 1) withString:@""];
     }
     
     return result;
@@ -219,12 +226,15 @@
             leftOperator = [NSNumber numberWithDouble:[resultText doubleValue]];
 
             [self performOperation:kButtonChangeSign];
+            deleteInput = YES;
             break;
         case kButtonDivide:
             [self performOperation:kButtonDivide];
+            deleteInput = YES;
             break;
         case kButtonMultiply:
             [self performOperation:kButtonMultiply];
+            deleteInput = YES;
             break;
         case kButtonSeven:
             ADD_DIGIT(7);
@@ -249,6 +259,7 @@
             break;
         case kButtonAdd:
             [self performOperation:kButtonAdd];
+            deleteInput = YES;
             break;
         case kButtonOne:
             ADD_DIGIT(1);
@@ -271,13 +282,8 @@
             break;
     }
     
-    // remove the initial 0 if present
-    if ([resultText length] > 1 && [resultText characterAtIndex:0] == '0') {
-        [resultText replaceCharactersInRange:NSMakeRange(0, 1) withString:@""];
-    }
-    
     // prettify result
-    self.resultText = [self prettyStringFromString:resultText];
+    self.resultText = [self readableNumberFromString:resultText];
     
     // check if we need to add a dot
     if ([sender tag] == kButtonDot) {
