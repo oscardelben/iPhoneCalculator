@@ -2,8 +2,6 @@
 
 #import "CalculatorViewController.h"
 
-#define ADD_DIGIT(x) [self.resultText appendFormat:@"%d", x]
-
 @implementation CalculatorViewController
 
 @synthesize resultLabel;
@@ -21,7 +19,7 @@
 
 #pragma mark - View lifecycle
 
-// row and column are 0 indexed
+// row and column are 0 indexed. We use this code to programmatically create a button
 
 - (void)addButtonWithTitle:(NSString *)aTitle tag:(int)tag row:(int)row column:(int)column width:(int)width height:(int)height
 {
@@ -68,40 +66,40 @@
     resultLabel.textAlignment = UITextAlignmentRight;
     resultLabel.font = [UIFont systemFontOfSize:24];
     
-    // initialize memory to 0
-    memory = 0;
-    
     // Add it to the view
     [self.view addSubview:resultLabel];
     
+    // initialize memory to 0
+    memory = 0;
+    
     // Add buttons
-    [self addButtonWithTitle:@"mc" tag:kButtonMC row:0 column:0 width:1 height:1];
-    [self addButtonWithTitle:@"m+" tag:kButtonMPlus row:0 column:1 width:1 height:1];
-    [self addButtonWithTitle:@"m-" tag:kButtonMMinus row:0 column:2 width:1 height:1];
-    [self addButtonWithTitle:@"mr" tag:kButtonMR row:0 column:3 width:1 height:1];
+    [self addButtonWithTitle:@"mc"      tag:kButtonMC           row:0 column:0 width:1 height:1];
+    [self addButtonWithTitle:@"m+"      tag:kButtonMPlus        row:0 column:1 width:1 height:1];
+    [self addButtonWithTitle:@"m-"      tag:kButtonMMinus       row:0 column:2 width:1 height:1];
+    [self addButtonWithTitle:@"mr"      tag:kButtonMR           row:0 column:3 width:1 height:1];
     
-    [self addButtonWithTitle:@"AC" tag:kButtonAC row:1 column:0 width:1 height:1];
-    [self addButtonWithTitle:@"\u00B1" tag:kButtonChangeSign row:1 column:1 width:1 height:1];
-    [self addButtonWithTitle:@"\u00F7" tag:kButtonDivide row:1 column:2 width:1 height:1];
-    [self addButtonWithTitle:@"\u00D7" tag:kButtonMultiply row:1 column:3 width:1 height:1];
+    [self addButtonWithTitle:@"AC"      tag:kButtonAC           row:1 column:0 width:1 height:1];
+    [self addButtonWithTitle:@"\u00B1"  tag:kButtonChangeSign   row:1 column:1 width:1 height:1];
+    [self addButtonWithTitle:@"\u00F7"  tag:kButtonDivide       row:1 column:2 width:1 height:1];
+    [self addButtonWithTitle:@"\u00D7"  tag:kButtonMultiply     row:1 column:3 width:1 height:1];
     
-    [self addButtonWithTitle:@"7" tag:kButtonSeven row:2 column:0 width:1 height:1];
-    [self addButtonWithTitle:@"8" tag:kButtonEight row:2 column:1 width:1 height:1];
-    [self addButtonWithTitle:@"9" tag:kButtonNine row:2 column:2 width:1 height:1];
-    [self addButtonWithTitle:@"\u2212" tag:kButtonSubtract row:2 column:3 width:1 height:1];
+    [self addButtonWithTitle:@"7"       tag:kButtonSeven        row:2 column:0 width:1 height:1];
+    [self addButtonWithTitle:@"8"       tag:kButtonEight        row:2 column:1 width:1 height:1];
+    [self addButtonWithTitle:@"9"       tag:kButtonNine         row:2 column:2 width:1 height:1];
+    [self addButtonWithTitle:@"\u2212"  tag:kButtonSubtract     row:2 column:3 width:1 height:1];
     
-    [self addButtonWithTitle:@"4" tag:kButtonFour row:3 column:0 width:1 height:1];
-    [self addButtonWithTitle:@"5" tag:kButtonFive row:3 column:1 width:1 height:1];
-    [self addButtonWithTitle:@"6" tag:kButtonSix row:3 column:2 width:1 height:1];
-    [self addButtonWithTitle:@"+" tag:kButtonAdd row:3 column:3 width:1 height:1];
+    [self addButtonWithTitle:@"4"       tag:kButtonFour         row:3 column:0 width:1 height:1];
+    [self addButtonWithTitle:@"5"       tag:kButtonFive         row:3 column:1 width:1 height:1];
+    [self addButtonWithTitle:@"6"       tag:kButtonSix          row:3 column:2 width:1 height:1];
+    [self addButtonWithTitle:@"+"       tag:kButtonAdd          row:3 column:3 width:1 height:1];
     
-    [self addButtonWithTitle:@"1" tag:kButtonOne row:4 column:0 width:1 height:1];
-    [self addButtonWithTitle:@"2" tag:kButtonTwo row:4 column:1 width:1 height:1];
-    [self addButtonWithTitle:@"3" tag:kButtonThree row:4 column:2 width:1 height:1];
-    [self addButtonWithTitle:@"=" tag:kButtonEqual row:4 column:3 width:1 height:2];
+    [self addButtonWithTitle:@"1"       tag:kButtonOne          row:4 column:0 width:1 height:1];
+    [self addButtonWithTitle:@"2"       tag:kButtonTwo          row:4 column:1 width:1 height:1];
+    [self addButtonWithTitle:@"3"       tag:kButtonThree        row:4 column:2 width:1 height:1];
+    [self addButtonWithTitle:@"="       tag:kButtonEqual        row:4 column:3 width:1 height:2];
     
-    [self addButtonWithTitle:@"0" tag:kButtonZero row:5 column:0 width:2 height:1];
-    [self addButtonWithTitle:@"." tag:kButtonDot row:5 column:2 width:1 height:1];
+    [self addButtonWithTitle:@"0"       tag:kButtonZero         row:5 column:0 width:2 height:1];
+    [self addButtonWithTitle:@"."       tag:kButtonDot          row:5 column:2 width:1 height:1];
 }
 
 #pragma mark utilities
@@ -132,6 +130,7 @@
             break;
     }
     
+    // reset the leftOperator
     leftOperator = nil;
     
     self.resultText = [NSMutableString stringWithFormat:@"%f", result];
@@ -139,7 +138,7 @@
 
 - (void)performOperation:(int)theOperation
 {
-    // if we have a right operator already, compute the existing value first
+    // if we have a right operator already, compute the existing value
     if (leftOperator) {
         [self doOperation:theOperation];
     } else {
@@ -154,19 +153,21 @@
 - (NSMutableString *)readableNumberFromString:(NSString *)aString
 {
     // given 12.30000 we remove the trailing zeros
-    NSLog(@"%@", aString);
     NSMutableString *result = [NSMutableString stringWithString:aString];
     
-    // check if it contains a . character
+    // check if it contains a . character.
     if ([result rangeOfString:@"."].location != NSNotFound) {
         
         // start from the end, and remove any 0 or . you find until you find a number greater than 0
         for (int i = [result length] - 1; i >= 0; i--) {
+            // get the char
             unichar currentChar = [result characterAtIndex:i];
             
             if (currentChar == '0') {
+                // remove it from the string
                 [result replaceCharactersInRange:NSMakeRange(i, 1) withString:@""];
             } else if (currentChar == '.') {
+                // remove it from the string
                 [result replaceCharactersInRange:NSMakeRange(i, 1) withString:@""];
                 break;
             }
@@ -191,14 +192,18 @@
 
 #pragma mark actions
 
+// This is a macro function that I use below to DRY up the code
+#define ADD_DIGIT(x) [self.resultText appendFormat:@"%d", x]
+
 - (void)buttonPressed:(id)sender
 {
+    // We sometimes need to delete the current text, but we never have to do so for the change sign button
     if (deleteInput && [sender tag] != kButtonChangeSign) {
         [resultText setString:@""];
     }
-    
     deleteInput = NO;
     
+    // See which button the user pressed
     switch ([sender tag]) {
         case kButtonMC:
             // reset memory
@@ -210,19 +215,22 @@
             deleteInput = YES;
             break;
         case kButtonMMinus:
+            // subract number from memory
             memory -= [resultText doubleValue];
             deleteInput = YES;
             break;
         case kButtonMR:
+            // recall memory
             self.resultText = [NSMutableString stringWithFormat:@"%f", memory];
             deleteInput = YES;
             break;
         case kButtonAC:
+            // reset screen
             self.resultText = [NSMutableString stringWithString:@"0"];
             leftOperator = nil;
             break;
         case kButtonChangeSign:
-            // force the left operator
+            // force the left operator since we only have one in this case
             leftOperator = [NSNumber numberWithDouble:[resultText doubleValue]];
 
             [self performOperation:kButtonChangeSign];
@@ -285,12 +293,12 @@
     // prettify result
     self.resultText = [self readableNumberFromString:resultText];
     
-    // check if we need to add a dot
+    // check if we need to add a dot, like Apple's calculator does.
     if ([sender tag] == kButtonDot) {
         [resultText appendString:@"."];
     }
     
-    // finally show the text
+    // finally show the text to the user
     resultLabel.text = resultText;
 }
 

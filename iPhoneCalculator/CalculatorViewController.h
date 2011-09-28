@@ -2,11 +2,13 @@
 
 #import <UIKit/UIKit.h>
 
+// We store the various buttons in a custom enumerator
+
 typedef enum {
-    kButtonMC,
-    kButtonMPlus,
-    kButtonMMinus,
-    kButtonMR,
+    kButtonMC, // 0
+    kButtonMPlus, // 1
+    kButtonMMinus, // 2
+    kButtonMR, // etc
     
     kButtonAC,
     kButtonChangeSign,
@@ -35,7 +37,7 @@ typedef enum {
 @interface CalculatorViewController : UIViewController
 {
     NSNumber *leftOperator;
-    kButton operation; // We're going to use kButtons to store the operation to simplify things
+    kButton operation;
     BOOL deleteInput;
     double memory;
 }
