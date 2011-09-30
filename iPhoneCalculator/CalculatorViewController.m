@@ -1,5 +1,4 @@
 
-
 #import "CalculatorViewController.h"
 
 @implementation CalculatorViewController
@@ -255,6 +254,7 @@
             break;
         case kButtonSubtract:
             [self performOperation:kButtonSubtract];
+            deleteInput = YES;
             break;
         case kButtonFour:
             ADD_DIGIT(4);
